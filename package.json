@@ -2,6 +2,7 @@
   "name": "rest-api",
   "version": "1.0.0",
   "main": "server.js",
+  "module": "module",
   "scripts": {
     "dev": "nodemon -r esm server.js",
     "start": "node -r esm server.js"
@@ -22,6 +23,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^10.0.2",
     "googleapis": "^95.0.0",
+    "heroku": "^7.60.2",
     "i": "^0.3.7",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
