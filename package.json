@@ -2,6 +2,7 @@
   "name": "adwoa",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon -r esm server.js",
     "start": "node -r esm server.js"
@@ -32,6 +33,7 @@
     "react-scripts": "^5.0.0",
     "socket.io": "^4.4.1",
     "stripe": "^8.219.0",
+    "to-esm": "^2.15.0",
     "yarn": "^1.22.18"
   },
   "devDependencies": {
