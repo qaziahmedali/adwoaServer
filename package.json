@@ -1,16 +1,15 @@
 {
-  "name": "rest-api",
+  "name": "adwoa",
   "version": "1.0.0",
   "main": "server.js",
-  "module": "module",
   "scripts": {
     "dev": "nodemon -r esm server.js",
     "start": "node -r esm server.js"
   },
-  "author": "Mirza Nouman",
+  "author": "Ahmed Ali",
   "license": "MIT",
   "engines": {
-    "node": "16.14.0"
+    "node": "16.10.0"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.6.1",
@@ -21,9 +20,7 @@
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "firebase-admin": "^10.0.2",
     "googleapis": "^95.0.0",
-    "heroku": "^7.60.2",
     "i": "^0.3.7",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
@@ -34,9 +31,10 @@
     "path": "^0.12.7",
     "react-scripts": "^5.0.0",
     "socket.io": "^4.4.1",
-    "yarn": "^1.22.17"
+    "stripe": "^8.219.0",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.16"
   }
 }

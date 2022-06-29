@@ -16,6 +16,7 @@ const auth = async (req, res, next) => {
       _id,
       role,
     };
+    console.log("REQ.USER", user);
     req.user = user;
     next();
   } catch (err) {

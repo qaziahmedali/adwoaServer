@@ -51,7 +51,7 @@ const challengeController = {
       shortDes,
       desc,
     });
-    console.log("after", document);
+
     // } catch (err) {
     //   return next(err);
     // }
@@ -59,7 +59,7 @@ const challengeController = {
       { role: "customer" },
       { $set: { challengeId: document._id, challengeStatus: true } }
     );
-    console.log("suer", user);
+
     res.status(201).json(document);
   },
 

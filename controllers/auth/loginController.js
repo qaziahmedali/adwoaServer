@@ -22,7 +22,7 @@ const loginController = {
     }
 
     // check if user exist in database already
-    let user;
+    let user, result;
     try {
       user = await User.findOne({ email: req.body.email })
         .select("-updatedAt -__v")
@@ -40,15 +40,23 @@ const loginController = {
     if (!match) {
       return next(CustomErrorHandler.wrongCredentials());
     }
-    // tokens
-    const access_token = JwtServices.sign({ _id: user._id, role: user.role });
+    //emailVerified
+    if (!user.emailVerified) {
+      return next(
+        CustomErrorHandler.wrongCredentials("please verify your email first")
+      );
+    } else {
+      // tokens
+      const access_token = JwtServices.sign({ _id: user._id, role: user.role });
 
-    // database whitlist
-    const result = {
-      message: "success",
-      access_token,
-      data: user,
-    };
+      // database whitlist
+      result = {
+        message: "success",
+        login: true,
+        access_token,
+        data: user,
+      };
+    }
     res.json(result);
   },
 

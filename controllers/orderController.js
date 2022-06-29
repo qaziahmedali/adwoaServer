@@ -1,5 +1,4 @@
 import { Order, Transaction } from "../models";
-import FirebaseService from "../services/FirebaseService";
 // const moment = require("moment");
 
 const orderController = {
@@ -50,7 +49,7 @@ const orderController = {
         totalQty,
         totalPrice,
       });
-      // console.log("orders", orders);
+      console.log("orders", orders);
       if (orders) {
         console.log("iff k andr");
 
@@ -67,12 +66,7 @@ const orderController = {
         console.log("errrrr");
       }
       console.log("order transactions", transactions);
-      if (transactions) {
-        FirebaseService.sendNotificationToSpecificUser(next, req.user._id, {
-          title: "Wegoz App",
-          body: "Order Placed! Need confirmation from admin",
-        });
-      }
+
       res.status(201).json({ message: "Order placed successfully" });
     } catch (err) {
       return next(err);

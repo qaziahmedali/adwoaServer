@@ -1,41 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
-import { DB_URL, FIREBASE_TOKEN } from "./config";
+import { DB_URL } from "./config";
 import errorHandler from "./middlewares/errorHandler";
 import routes from "./routes";
 import cors from "cors";
 import Emitter from "events";
-import FirebaseService from "./services/FirebaseService";
-// import admin from "firebase-admin";
-// import serviceAccount from "./food-app-69e18-firebase-adminsdk-24cyc-46dcb2530f.json";
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount)
-// })
-
-// admin.messaging().send({
-//   token: FIREBASE_TOKEN,
-//   data:{
-//     customData: "Wegoz",
-//     id: '1',
-//     ad: "Nouman"
-//   },
-//   android: {
-//     notification: {
-//       body: "Welcome to Wegoz!",
-//       title: "Wegoz Title",
-//       color: '#ffffff',
-//       priority: 'high',
-//       sound: 'default',
-//       vibrateTimingsMillis: [200, 500, 800]
-//     }
-//   }
-// }).then((msg)=>{
-//   console.log("msg", msg)
-// })
-
-// FirebaseService.trigger()
 
 const APP_PORT = process.env.PORT || 5000;
 
@@ -79,8 +49,9 @@ db.once("open", () => {
   console.log("DB connected...");
 });
 
+// home route for heroku app
 app.get("/", (req, res) => {
-  res.send("Welcome food server");
+  res.send("Welcome on Fits");
 });
 
 // App Listener
@@ -112,7 +83,6 @@ const io = require("socket.io")(server);
 // });
 
 io.on("connection", (socket) => {
-  console.log("a user connected: D");
   console.log(`User Connected: ${socket.id}`);
 
   socket.on("join_room", (data) => {
@@ -121,12 +91,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", (data) => {
-    console.log("mesage", data);
     socket.to(data.room).emit("receive_message", data);
-  });
-  socket.on("update_status", (socket) => {
-    console.log("mesage", socket);
-    io.emit("update_status");
   });
 
   socket.on("disconnect", () => {

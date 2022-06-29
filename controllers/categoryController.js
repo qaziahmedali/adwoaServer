@@ -23,8 +23,8 @@ const handleMultipartData = multer({
 const categoryController = {
   // store product
   async store(req, res, next) {
-    console.log("req.body", req.body);
-    console.log("req.file", req.file);
+    // console.log("req.body", req.body);
+    // console.log("req.file", req.file);
     // Multipart from data
     handleMultipartData(req, res, async (err) => {
       if (err) {
@@ -78,7 +78,7 @@ const categoryController = {
       if (req.file) {
         filePath = req.file.path;
       }
-      console.log("files", req.file);
+      // console.log("files", req.file);
       // validation
       const { error } = categorySchema.validate(req.body);
       if (error) {
@@ -156,7 +156,7 @@ const categoryController = {
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }
-    console.log(document);
+
     return res.json(document);
   },
 

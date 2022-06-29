@@ -1,12 +1,21 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const messageSchema = new mongoose.Schema(
   {
     roomId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
+      required: true,
+    },
+    message: {
       type: String,
       required: true,
     },
-    mes: {
+    senderName: {
+      type: String,
+      required: true,
+    },
+    receiverName: {
       type: String,
       required: true,
     },
@@ -24,14 +33,14 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    senderName: {
-      type: String,
-      required: true,
-    },
-    receiverName: {
-      type: String,
-      required: true,
-    },
+    // senderName: {
+    //   type: String,
+    //   required: true,
+    // },
+    // receiverName: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

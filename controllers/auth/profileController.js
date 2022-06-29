@@ -21,7 +21,6 @@ const userController = {
 
   // Edit name
   async editName(req, res, next) {
-    console.log(req.body);
     const { name } = req.body;
     let document;
 
@@ -42,7 +41,6 @@ const userController = {
 
   // Edit email
   async editEmail(req, res, next) {
-    console.log(req.body);
     // Validation
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
@@ -72,8 +70,6 @@ const userController = {
 
   // Edit Phone
   async editPhone(req, res, next) {
-    console.log(req.body);
-
     const { phone } = req.body;
     let document;
 
@@ -94,25 +90,23 @@ const userController = {
 
   // Edit Password
   async editPassword(req, res, next) {
-    console.log(req.body);
     // Validation
 
     const { password } = req.body;
     let document;
     // Hash Password
     const hashedPassword = await bcrypt.hash(password, 10); // 10 is salt rounds
-    // try {
-    document = await User.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        password: hashedPassword,
-      },
-      { new: true }
-    );
-    console.log("document", document);
-    // } catch (err) {
-    //   return next(err);
-    // }
+    try {
+      document = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          password: hashedPassword,
+        },
+        { new: true }
+      );
+    } catch (err) {
+      return next(err);
+    }
 
     res.status(201).json(document);
   },
