@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const sessionSchema = Joi.object({
   session_title: Joi.string().required(),

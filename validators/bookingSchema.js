@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const bookingSchema = Joi.object({
   sessionId: Joi.string().required(),

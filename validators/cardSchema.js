@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const categorySchema = Joi.object({
   card_number: Joi.number().required().min(12).max(12),

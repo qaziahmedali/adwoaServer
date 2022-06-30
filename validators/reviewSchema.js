@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const reviewSchema = Joi.object({
   rating: Joi.number().required(),

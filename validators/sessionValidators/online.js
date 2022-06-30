@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const onlineSchema = Joi.object({
   meetingLink: Joi.string().required(),

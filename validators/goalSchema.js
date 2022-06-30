@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const gaolSchema = Joi.object({
   goal_name: Joi.string().required(),

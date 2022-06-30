@@ -1,4 +1,4 @@
-const Joi = require("Joi");
+const Joi = require("joi");
 
 const recordedSchema = Joi.object({
   videoLink: Joi.string().required(),
