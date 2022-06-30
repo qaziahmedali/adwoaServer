@@ -24,22 +24,51 @@ const userController = {
       return next(err);
     }
   },
-  async codeVerify(req, res) {
+  async codeVerify(req, res, next) {
     try {
-      console.log(req.body);
       let data = await Otp.findOne({
         email: req.body.email,
         code: req.body.code,
-      });
-      console.log(data);
-      res.status(201).json(data);
-      // response.message = "Otp verify succcessfully";
-      // response.statusText = "Otp verify";
+      })
+        .limit(1)
+        .sort({ $natural: -1 });
+
+      if (data) {
+        const date = new Date();
+        const currenTime = date.getTime();
+
+        console.log("db expireIn", data.expireIn);
+        const diff = data.expireIn - currenTime;
+
+        if (diff < 0) {
+          return next(CustomErrorHandler.wrongCredentials("token expired"));
+        } else {
+          let user;
+          if (req.body.type == "verification") {
+            user = {
+              emailVerified: true,
+            };
+          }
+          if (req.body.type == "forgot_password") {
+            user = {
+              reset_password: true,
+            };
+          }
+          const result = await User.findOneAndUpdate(
+            { email: data.email },
+            user,
+            { new: true }
+          );
+
+          res
+            .status(201)
+            .json({ message: "verified", success: "true", statusCode: 200 });
+        }
+      } else {
+        return next(CustomErrorHandler.notFound("verification code incorrect"));
+      }
     } catch (error) {
-      console.log(error);
-      res.status(401).json(error);
-      // response.message = "Otp wrong";
-      // response.statusText = "Otp not found";
+      return next(error);
     }
     // res.status(response.statusText).json(response);
   },

@@ -13,13 +13,8 @@ const userSchema = new Schema(
       required: false,
       default: "/uploads/avatar.png",
     },
-    challengeId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Challenge",
-    },
-    totalPoints: { type: Number, default: 0 },
-    amount: { type: Number, default: 0 },
-    challengeStatus: { type: Boolean, default: false },
+    emailVerified: { type: Boolean, default: false },
+    reset_password: { type: Boolean, default: false },
     role: { type: String, default: "customer" },
   },
   { timestamps: true }
