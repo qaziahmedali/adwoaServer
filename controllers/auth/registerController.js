@@ -8,6 +8,7 @@ const fs = require("fs");
 const JwtServices = require("../../services/JwtService");
 const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const registerSchema = require("../../validators/registerValidator");
+const SendGridService = require("../../services/SendGridService");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -38,7 +39,7 @@ const registerController = {
       if (err) {
         return next(CustomErrorHandler.serverError(err.message));
       }
-      let filePath;
+      let filePath, email_message;
       if (req.file) {
         filePath = req.file.path;
       }
@@ -91,7 +92,7 @@ const registerController = {
       let data;
       try {
         data = await user.save();
-        console.log(data);
+        email_message = await SendGridService.sendEmail(req.body.email, next);
 
         // Token
         access_token = JwtServices.sign({ _id: data._id, role: data.role });
@@ -100,6 +101,7 @@ const registerController = {
       }
       const result = {
         message: "success",
+        email_message,
         access_token,
         data: data,
       };
