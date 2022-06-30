@@ -1,5 +1,5 @@
-const { User } = require("../../models");
 const { REFRESH_SECRET } = require("../../config");
+const { User } = require("../../models");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");

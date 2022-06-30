@@ -10,7 +10,7 @@ const CustomErrorHandler = require("../services/CustomErrorHandler");
 const errorHandler = (err, req, res, next) => {
   let statusCode = 500;
   let data;
-  if (DEBUG_MODE === "true") {
+  if (DEBUG_MODE === true) {
     console.log("debug mode");
     data = {
       message: err.message,
