@@ -5,4 +5,5 @@ module.exports = {
   REFRESH_SECRET: process.env.REFRESH_SECRET,
   APP_URL: process.env.APP_URL,
   FIREBASE_TOKEN: process.env.FIREBASE_TOKEN,
+  SANDGRID_API_KEY: process.env.SANDGRID_API_KEY,
 };

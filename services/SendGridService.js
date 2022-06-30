@@ -5,7 +5,7 @@
 // import { API_KEY } from "../config/";
 
 const { JWT_SECRET } = require("../config");
-const { API_KEY } = require("../config");
+const { SANDGRID_API_KEY } = require("../config");
 const { User } = require("../model");
 const otp = require("../models/otp");
 const sgMail = require("@sendgrid/mail");
@@ -53,7 +53,7 @@ class SendGridService {
 //mailer function call
 function mailer(email, otp) {
   try {
-    const resp = sgMail.setApiKey(API_KEY);
+    const resp = sgMail.setApiKey(SANDGRID_API_KEY);
 
     const message = {
       from: "protechgiant@gmail.com",
