@@ -1,12 +1,12 @@
 {
-  "name": "rest-api",
+  "name": "adwoa-linda",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "Mirza Nouman",
+  "author": "Ahmed Ali",
   "license": "MIT",
   "engines": {
     "node": "16.14.0"

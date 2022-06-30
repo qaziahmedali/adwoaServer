@@ -58,9 +58,9 @@ function mailer(email, otp) {
     const message = {
       from: "protechgiant@gmail.com",
       to: { email },
-      subject: "OTP Genrate from Wegoze food App",
-      text: `Your verification code is ${otp} from wegoze food`,
-      html: `<p>Your verification code is  <h4> ${otp} </h4> for wegoze food App </p>`,
+      subject: "OTP Genrate from Adwoa Linda App",
+      text: `Your verification code is ${otp} from Adwoa Linda & Financial Associates`,
+      html: `<p>Your verification code is  <h4> ${otp} </h4> for adwoa linda app </p>`,
     };
 
     sgMail

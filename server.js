@@ -94,7 +94,7 @@ db.once("open", () => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Welcome food server");
+  res.send("Welcome Adwoa Linda Api");
 });
 
 // App Listener

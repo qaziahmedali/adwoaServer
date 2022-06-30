@@ -62,16 +62,16 @@ const registerController = {
       }
 
       // check if user exist in database already
-      try {
-        const exist = await User.exists({ email: req.body.email });
-        if (exist) {
-          return next(
-            CustomErrorHandler.alreadyExist("This email is already taken.")
-          );
-        }
-      } catch (err) {
-        return next(err);
-      }
+      // try {
+      //   const exist = await User.exists({ email: req.body.email });
+      //   if (exist) {
+      //     return next(
+      //       CustomErrorHandler.alreadyExist("This email is already taken.")
+      //     );
+      //   }
+      // } catch (err) {
+      //   return next(err);
+      // }
 
       const { name, email, password, phone, role } = req.body;
 
