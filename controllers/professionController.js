@@ -1,6 +1,8 @@
-import { Profession } from "../models";
-import professionSchema from "../validators/professionSchema";
+// import { Profession } from "../models";
+// import professionSchema from "../validators/professionSchema";
+const { Profession } = require("../models");
 
+const professionSchema = require("../validators/professionSchema");
 const professionController = {
   // create profile
   async store(req, res, next) {
@@ -147,4 +149,4 @@ const professionController = {
   },
 };
 
-export default professionController;
+module.exports = professionController;

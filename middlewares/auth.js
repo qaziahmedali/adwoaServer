@@ -1,5 +1,5 @@
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import JwtServices from "../services/JwtService";
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+const JwtServices = require("../services/JwtService");
 
 const auth = async (req, res, next) => {
   let authHeader = req.headers.authorization;
@@ -16,7 +16,6 @@ const auth = async (req, res, next) => {
       _id,
       role,
     };
-    console.log("REQ.USER", user);
     req.user = user;
     next();
   } catch (err) {
@@ -25,4 +24,4 @@ const auth = async (req, res, next) => {
   console.log(token);
 };
 
-export default auth;
+module.exports = auth;

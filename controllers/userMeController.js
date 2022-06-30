@@ -1,4 +1,4 @@
-import {
+const {
   Fitness,
   Payment,
   Personal,
@@ -7,7 +7,7 @@ import {
   Service,
   Session,
   User,
-} from "../models";
+} = require("../models");
 const stripe = require("stripe")(
   "sk_test_51Ke1KTHjHBX7BsTL075YAHuruUm8Axbhg4pCx2ac7BzYGA12vk5tvAf2iUhG6qSgMIFAm1nslPxDRatuF96VRLcv00BUgmqIlW"
 );
@@ -93,4 +93,4 @@ const userMeController = {
   },
 };
 
-export default userMeController;
+module.exports = userMeController;

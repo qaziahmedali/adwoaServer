@@ -1,4 +1,5 @@
-import { Order, Transaction, User, Product } from "../models";
+// import { Order, Transaction, User, Product } from "../models";
+const { Order, Transaction, User, Product } = require("../models");
 const moment = require("moment");
 
 const dashboardController = {
@@ -104,4 +105,4 @@ const dashboardController = {
   //   },
 };
 
-export default dashboardController;
+module.exports = dashboardController;

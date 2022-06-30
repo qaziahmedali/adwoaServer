@@ -24,9 +24,7 @@ class CustomErrorHandler extends Error {
   static serverError(message = "Internal server error") {
     return new CustomErrorHandler(500, message);
   }
-  static emptyState(message = "req is empty and not found") {
-    return new CustomErrorHandler(500, message);
-  }
 }
 
-export default CustomErrorHandler;
+// module.exports = CustomErrorHandler
+module.exports = CustomErrorHandler;

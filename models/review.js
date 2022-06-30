@@ -48,4 +48,4 @@ const reviewSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Review", reviewSchema, "reviews");
+module.exports = mongoose.model("Review", reviewSchema, "reviews");

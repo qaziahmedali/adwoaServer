@@ -1,8 +1,14 @@
-import errorHandler from "../middlewares/errorHandler";
-import { Classes } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import classesSchema from "../validators/classesSchema";
+// import errorHandler from "../middlewares/errorHandler";
+// import { Classes } from "../models";
+// import CustomErrorHandler from "../services/CustomErrorHandler";
+// import classesSchema from "../validators/classesSchema";
+const { Classes } = require("../models");
 
+const errorHandler = require("../middlewares/errorHandler");
+
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
+const productSchema = require("../validators/categoryValidator");
 const classesController = {
   // create classes
   async store(req, res, next) {
@@ -182,4 +188,4 @@ const classesController = {
   },
 };
 
-export default classesController;
+module.exports = classesController;

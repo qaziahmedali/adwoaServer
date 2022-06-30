@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -15,4 +15,4 @@ const personalInfoSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Personal", personalInfoSchema, "personals");
+module.exports = mongoose.model("Personal", personalInfoSchema, "personals");

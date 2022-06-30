@@ -1,9 +1,15 @@
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
-import { User } from "../../models";
-import JwtServices from "../../services/JwtService";
-import { REFRESH_SECRET } from "../../config";
+// import Joi from "joi";
+// import bcrypt from "bcrypt";
+// import CustomErrorHandler from "../../services/CustomErrorHandler";
+// import { User } from "../../models";
+// import JwtServices from "../../services/JwtService";
+// import { REFRESH_SECRET } from "../../config";
+const { User } = require("../../models");
+const { REFRESH_SECRET } = require("../../config");
+const bcrypt = require("bcrypt");
+const Joi = require("joi");
+const JwtServices = require("../../services/JwtService");
+const CustomErrorHandler = require("../../services/CustomErrorHandler");
 
 const loginController = {
   async login(req, res, next) {
@@ -22,7 +28,7 @@ const loginController = {
     }
 
     // check if user exist in database already
-    let user, result;
+    let user;
     try {
       user = await User.findOne({ email: req.body.email })
         .select("-updatedAt -__v")
@@ -40,23 +46,15 @@ const loginController = {
     if (!match) {
       return next(CustomErrorHandler.wrongCredentials());
     }
-    //emailVerified
-    if (!user.emailVerified) {
-      return next(
-        CustomErrorHandler.wrongCredentials("please verify your email first")
-      );
-    } else {
-      // tokens
-      const access_token = JwtServices.sign({ _id: user._id, role: user.role });
+    // tokens
+    const access_token = JwtServices.sign({ _id: user._id, role: user.role });
 
-      // database whitlist
-      result = {
-        message: "success",
-        login: true,
-        access_token,
-        data: user,
-      };
-    }
+    // database whitlist
+    const result = {
+      message: "success",
+      access_token,
+      data: user,
+    };
     res.json(result);
   },
 
@@ -80,4 +78,4 @@ const loginController = {
   },
 };
 
-export default loginController;
+module.exports = loginController;

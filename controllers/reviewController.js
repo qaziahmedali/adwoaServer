@@ -1,6 +1,8 @@
-import { Review } from "../models";
-import updateReview from "../helper/reviewUpdate";
-import CustomErrorHandler from "../services/CustomErrorHandler";
+// import { Review } from "../models";
+const { Review } = require("../models");
+const updateReview = require("../helper/reviewUpdate");
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
 const ratingController = {
   // create profile
   async store(req, res, next) {
@@ -81,4 +83,4 @@ const ratingController = {
   },
 };
 
-export default ratingController;
+module.exports = ratingController;

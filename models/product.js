@@ -1,5 +1,7 @@
-import mongoose from "mongoose";
-import { APP_URL } from "../config";
+// import mongoose from "mongoose";
+// import { APP_URL } from "../config";
+const mongoose = require("mongoose");
+const { APP_URL } = require("../config");
 
 const Schema = mongoose.Schema;
 
@@ -24,4 +26,4 @@ const productSchema = new Schema(
   { timestamps: true, toJSON: { getters: true }, id: false }
 );
 
-export default mongoose.model("Product", productSchema, "products");
+module.exports = mongoose.model("Product", productSchema, "products");

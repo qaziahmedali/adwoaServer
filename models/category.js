@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-import { APP_URL } from "../config";
+const { APP_URL } = require("../config");
 
+// const CustomErrorHandler = require("../services/CustomErrorHandler");
 const categorySchema = new mongoose.Schema(
   {
     name: {
@@ -21,4 +22,4 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true, toJSON: { getters: true }, id: false }
 );
 
-export default mongoose.model("Category", categorySchema, "categories");
+module.exports = mongoose.model("Category", categorySchema, "categories");

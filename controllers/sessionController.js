@@ -1,9 +1,14 @@
-import { Personal, Profession, Session, User } from "../models";
-import onlineSchema from "../validators/sessionValidators/online";
-import physicalSchema from "../validators/sessionValidators/physicalSchema";
-import recordedSchema from "../validators/sessionValidators/recordedSchema";
-import sessionSchema from "../validators/sessionValidators/sessionSchema";
+// import { Personal, Profession, Session, User } from "../models";
+// import onlineSchema from "../validators/sessionValidators/online";
+// import physicalSchema from "../validators/sessionValidators/physicalSchema";
+// import recordedSchema from "../validators/sessionValidators/recordedSchema";
+// import sessionSchema from "../validators/sessionValidators/sessionSchema";
+const { Personal, Profession, Session, User } = require("../models");
 
+const onlineSchema = require("../validators/sessionValidators/online");
+const physicalSchema = require("../validators/sessionValidators/physicalSchema");
+const recordedSchema = require("../validators/sessionValidators/recordedSchema");
+const sessionSchema = require("../validators/sessionValidators/sessionSchema");
 const sessionController = {
   // get  All classes/or sessions
   async index(req, res, next) {
@@ -340,4 +345,4 @@ const sessionController = {
   },
 };
 
-export default sessionController;
+module.exports = sessionController;

@@ -1,7 +1,7 @@
-import { Service, User } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import serviceSchema from "../validators/serviceSchema";
+const { Service } = require("../models");
 
+const serviceSchema = require("../validators/serviceSchema");
+const CustomErrorHandler = require("../services/CustomErrorHandler");
 const serviceController = {
   // store service
   async store(req, res, next) {
@@ -184,4 +184,4 @@ const serviceController = {
   },
 };
 
-export default serviceController;
+module.exports = serviceController;

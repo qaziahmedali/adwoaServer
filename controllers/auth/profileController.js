@@ -1,8 +1,12 @@
-import { User } from "../../models";
-import Joi, { ref } from "joi";
-import bcrypt from "bcrypt";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
-
+// import { User } from "../../models";
+// import Joi, { ref } from "joi";
+const Joi = require("joi");
+// import bcrypt from "bcrypt";
+// import CustomErrorHandler from "../../services/CustomErrorHandler";
+const { User } = require("../../models");
+const bcrypt = require("bcrypt");
+// const Joi = require("joi");
+const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const userController = {
   async me(req, res, next) {
     try {
@@ -21,6 +25,7 @@ const userController = {
 
   // Edit name
   async editName(req, res, next) {
+    console.log(req.body);
     const { name } = req.body;
     let document;
 
@@ -41,6 +46,7 @@ const userController = {
 
   // Edit email
   async editEmail(req, res, next) {
+    console.log(req.body);
     // Validation
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
@@ -70,6 +76,8 @@ const userController = {
 
   // Edit Phone
   async editPhone(req, res, next) {
+    console.log(req.body);
+
     const { phone } = req.body;
     let document;
 
@@ -90,26 +98,28 @@ const userController = {
 
   // Edit Password
   async editPassword(req, res, next) {
+    console.log(req.body);
     // Validation
 
     const { password } = req.body;
     let document;
     // Hash Password
     const hashedPassword = await bcrypt.hash(password, 10); // 10 is salt rounds
-    try {
-      document = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          password: hashedPassword,
-        },
-        { new: true }
-      );
-    } catch (err) {
-      return next(err);
-    }
+    // try {
+    document = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        password: hashedPassword,
+      },
+      { new: true }
+    );
+    console.log("document", document);
+    // } catch (err) {
+    //   return next(err);
+    // }
 
     res.status(201).json(document);
   },
 };
 
-export default userController;
+module.exports = userController;

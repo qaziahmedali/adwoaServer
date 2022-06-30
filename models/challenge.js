@@ -1,5 +1,7 @@
-import mongoose from "mongoose";
-import { APP_URL } from "../config";
+// import mongoose from "mongoose";
+// import { APP_URL } from "../config";
+const mongoose = require("mongoose");
+const { APP_URL } = require("../config");
 
 const Schema = mongoose.Schema;
 
@@ -21,4 +23,4 @@ const challengeSchema = new Schema(
   { timestamps: true, toJSON: { getters: true }, id: false }
 );
 
-export default mongoose.model("Challenge", challengeSchema, "challenges");
+module.exports = mongoose.model("Challenge", challengeSchema, "challenges");

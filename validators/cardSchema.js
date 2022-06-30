@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const categorySchema = Joi.object({
   card_number: Joi.number().required().min(12).max(12),
@@ -7,4 +7,4 @@ const categorySchema = Joi.object({
   cvc: Joi.number().required().min(3).max(4),
 });
 
-export default categorySchema;
+module.exports = categorySchema;

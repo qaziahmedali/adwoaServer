@@ -1,28 +1,15 @@
-import Joi from "joi";
+const Joi = require("Joi");
+
+const { join } = require("path");
 
 const registerSchema = Joi.object({
+  name: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
-  role: Joi.string().required(),
-  password: Joi.string()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-    // .minOfSpecialCharacters(1)
-    .required(),
-  // .minOfLowercase(4)
-  // .minOfUppercase(5)
-  // .minOfNumeric(6)
-  // .noWhiteSpaces()
-  // .messages({
-  //   "password.minOfUppercase":
-  //     "{#label} should contain at least {#min} uppercase character",
-  //   "password.minOfSpecialCharacters":
-  //     "{#label} should contain at least {#min} special character",
-  //   "password.minOfLowercase":
-  //     "{#label} should contain at least {#min} lowercase character",
-  //   "password.minOfNumeric":
-  //     "{#label} should contain at least {#min} numeric character",
-  //   "password.noWhiteSpaces": "{#label} should not contain white spaces",
-  // }),
-  //
+  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
+  repeat_password: Joi.ref("password"),
+  profileImage: Joi.string() || Joi.object(),
+  phone: Joi.string().min(3).max(11).required(),
+  role: Joi.string().min(3).max(10).required(),
 });
 
-export default registerSchema;
+module.exports = registerSchema;

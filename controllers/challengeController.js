@@ -1,10 +1,21 @@
-import { Challenge, User } from "../models";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import productSchema from "../validators/productValidator";
+// import { Challenge, User } from "../models";
+// import multer from "multer";
+// import path from "path";
+// import fs from "fs";
+// import CustomErrorHandler from "../services/CustomErrorHandler";
+// import productSchema from "../validators/productValidator";
+const { Challenge, User } = require("../models");
 
+const multer = require("multer");
+
+// import path from "path";
+const path = require("path");
+
+const fs = require("fs");
+
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
+const productSchema = require("../validators/categoryValidator");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
   filename: (req, file, cb) => {
@@ -51,7 +62,7 @@ const challengeController = {
       shortDes,
       desc,
     });
-
+    console.log("after", document);
     // } catch (err) {
     //   return next(err);
     // }
@@ -59,7 +70,7 @@ const challengeController = {
       { role: "customer" },
       { $set: { challengeId: document._id, challengeStatus: true } }
     );
-
+    console.log("suer", user);
     res.status(201).json(document);
   },
 
@@ -178,4 +189,4 @@ const challengeController = {
   },
 };
 
-export default challengeController;
+module.exports = challengeController;

@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const videoSchema = Joi.object({
   sessionId: Joi.string().required(),
@@ -9,4 +9,4 @@ const videoSchema = Joi.object({
   price: Joi.number().required(),
 });
 
-export default videoSchema;
+module.exports = videoSchema;

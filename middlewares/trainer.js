@@ -1,6 +1,6 @@
-import { User } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
+const { User } = require("../models");
 
+const CustomErrorHandler = require("../services/CustomErrorHandler");
 const trainer = async (req, res, next) => {
   console.log("req", req.user);
   try {
@@ -17,4 +17,4 @@ const trainer = async (req, res, next) => {
   }
 };
 
-export default trainer;
+module.exports = trainer;

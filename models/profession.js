@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 const QualificationSchema = mongoose.Schema({
@@ -17,7 +17,7 @@ const professionInfoSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model(
+module.exports = mongoose.model(
   "Profession",
   professionInfoSchema,
   "professions"

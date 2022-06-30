@@ -1,12 +1,14 @@
-import { OAuth2Client } from "google-auth-library";
-import { API_KEY } from "../../config";
-import { User } from "../../models";
-import sgMail from "@sendgrid/mail";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
-import Otp from "../../models/otp";
-import bcrypt from "bcrypt";
-import SendGridService from "../../services/SendGridService";
+// import { OAuth2Client } from "google-auth-library";
+const { User } = require("../../models");
+const { OAuth2Client } = require("google-auth-library");
 
+const sgMail = require("@sendgrid/mail");
+const CustomErrorHandler = require("../../services/CustomErrorHandler");
+// import CustomErrorHandler from "../../services/CustomErrorHandler";
+const Otp = require("../../models/otp");
+const bcrypt = require("bcrypt");
+const API_KEY =
+  "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";
 const userController = {
   async me(req, res, next) {
     try {
@@ -22,121 +24,98 @@ const userController = {
       return next(err);
     }
   },
-  // Check otp exist in this particular email or not
-  async codeVerify(req, res, next) {
+  async codeVerify(req, res) {
     try {
+      console.log(req.body);
       let data = await Otp.findOne({
         email: req.body.email,
         code: req.body.code,
-      })
-        .limit(1)
-        .sort({ $natural: -1 });
+      });
+      console.log(data);
+      res.status(201).json(data);
+      // response.message = "Otp verify succcessfully";
+      // response.statusText = "Otp verify";
+    } catch (error) {
+      console.log(error);
+      res.status(401).json(error);
+      // response.message = "Otp wrong";
+      // response.statusText = "Otp not found";
+    }
+    // res.status(response.statusText).json(response);
+  },
+  async emailSend(req, res, next) {
+    console.log(req.body);
+    let data = await User.findOne({ email: req.body.email });
+    console.log(data);
+    const responseType = {};
+    if (data) {
+      const otpCode = Math.floor(1000 + Math.random() * 9000);
+      const otpData = new Otp({
+        email: req.body.email,
+        code: otpCode,
+        expireIn: new Date().getTime() + 300 * 10000,
+      });
+      const otpResponse = await otpData.save();
+      responseType.statusText = "Success";
+      mailer(otpResponse.email, otpResponse.code);
+      responseType.message = "Please check your email";
+    } else {
+      responseType.statusText = "error";
+      responseType.message = "Email Id not exist";
+    }
+    res.status(200).json(responseType);
+  },
+  async changePassword(req, res, next) {
+    console.log("req", req.body);
+    try {
+      const data = await Otp.find({
+        email: req.body.email,
+        code: req.body.code,
+      });
+
+      console.log("data", data);
+      const response = {};
 
       if (data) {
+        console.log("data");
         const date = new Date();
         const currenTime = date.getTime();
+        console.log("time", currenTime);
 
-        console.log("db expireIn", data.expireIn);
-        const diff = data.expireIn - currenTime;
-
+        console.log("data?.forEach((v,i)=>{v?.expireIn})", data[0].expireIn);
+        const diff = data[0].expireIn - currenTime;
+        console.log("time", diff);
         if (diff < 0) {
-          return next(CustomErrorHandler.wrongCredentials("token expired"));
+          console.log("data...");
+          response.message = "token expired";
+          response.statusText = "error";
         } else {
-          let user;
-          if (req.body.type == "verification") {
-            user = {
-              emailVerified: true,
-            };
-          }
-          if (req.body.type == "forgot_password") {
-            user = {
-              reset_password: true,
-            };
-          }
-          const result = await User.findOneAndUpdate(
-            { email: data.email },
-            user,
-            { new: true }
+          response.message = "Otp verified succcessfully";
+          response.statusText = "Otp verify";
+          console.log("....");
+          console.log("....", req.body.password);
+          const hashedPassword = await bcrypt.hash(req.body.password, 10);
+          const user = await User.findOneAndUpdate(
+            { email: req.body.email },
+            { password: hashedPassword }
           );
 
-          res.status(201).json({ message: "verified" });
+          // await user.save();
+          console.log("user", user);
+          res.status(201).json("Update Success");
+          // response.message = "password change Successfully";
+          // response.statusText = "Success";
         }
       } else {
-        return next(CustomErrorHandler.notFound("verification code incorrect"));
+        res.json("Please Correct code enter");
+        // response.message = "Invalid Otp";
+        // response.statusText = "error";
       }
+      // res.json(response);
     } catch (error) {
-      return next(error);
+      console.log(error);
+      res.json("Please Correct code enter");
     }
-  },
-
-  // otp send in email (one time password ) for verification
-  async emailSend(req, res, next) {
-    const response = await SendGridService.sendEmail(req.body.email, next);
-    res.status(201).json(response);
-  },
-
-  // otp resend in email (one time password ) for verification
-  async resendEmail(req, res, next) {
-    const response = await SendGridService.sendEmail(req.body.email, next);
-    res.status(201).json(response);
-  },
-
-  // otp (one time password) check expire and update password
-  async changePassword(req, res, next) {
-    // try {
-    const findData = await User.findOne({ email: req.body.email });
-
-    if (findData.reset_password) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const user = await User.findOneAndUpdate(
-        { email: req.body.email },
-        { password: hashedPassword, reset_password: false }
-        // { reset_password: false }
-      );
-      res.status(201).json({ message: "password updated" });
-    } else {
-      return next(CustomErrorHandler.notFound("unable to change password"));
-    }
-    // const data = await Otp.find({
-    //   email: req.body.email,
-    //   code: req.body.code,
-    // });
-    // if (data) {
-    //   const date = new Date();
-    //   const currenTime = date.getTime();
-    //   const diff = data[0].expireIn - currenTime;
-    //   console.log("time", diff);
-    //   if (diff < 0) {
-    //     console.log("data...");
-    //     return next(new Error("token expire"));
-    //   }
-
-    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    // const user = await User.findOneAndUpdate(
-    //   { email: req.body.email },
-    //   { password: hashedPassword },
-    //   { reset_password: false }
-    // );
-    // if (user) {
-    //   const RemoveOtp = await Otp.findOneAndDelete(
-    //     user.email,
-    //     function (err, obj) {
-    //       if (err) throw err;
-    //       console.log("1 document deleted");
-    //     }
-    //   );
-    //   console.log("...", RemoveOtp);
-    // }
-    // console.log("user", user);
-    // res.status(201).json("Update Success");
-
-    // }
-    // else {
-    //   return next(new Error("Invalid Otp"));
-    // }
-    // } catch (error) {
-    //   return next(error);
-    // }
   },
 
   // Get all users
@@ -152,53 +131,70 @@ const userController = {
     }
     return res.json(documents);
   },
-
-  // update Role / Status ======>> "trainee" || "trainer"
-  async updateRole(req, res, next) {
-    const { role } = req.body;
-    console.log("req.body", role);
-    let document;
-    try {
-      document = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          role: role,
-        },
-        { new: true }
-      );
-    } catch (err) {
-      return next(err);
-    }
-
-    res.status(201).json(document);
-  },
 };
 
-// function mailer(email, otp) {
-//   try {
-//     const resp = sgMail.setApiKey(API_KEY);
-//     console.log("resp", resp);
-//     const message = {
-//       from: "hamzaameen8079@gmail.com",
-//       to: { email },
-//       subject: "OTP Genrate from Wegoze food App",
-//       text: `Your verification code is ${otp} from wegoze food`,
-//       html: `<p>Your verification code is  <h4> ${otp} </h4> for wegoze food App </p>`,
-//     };
-//     console.log("message", message);
-//     sgMail
-//       .send(message)
-//       .then((res) => {
-//         console.log("Email Send Successfully...", res);
-//         return res;
-//       })
-//       .catch((error) => {
-//         console.log("error", error.message);
-//         return next(CustomErrorHandler.serverError());
-//       });
-//   } catch (error) {
-//     console.log("catch error", error);
-//     return next(CustomErrorHandler.serverError());
-//   }
-// }
-export default userController;
+function mailer(email, otp) {
+  console.log("email....", email);
+  console.log("emailotp....", otp);
+  try {
+    // const accessToken = await OAuth2Client.getAccessToken();
+    // const transport = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     type: "OAuth2",
+
+    //     auth: {
+    //       type: "OAuth2",
+    //       user: "ameenhamza392@gmail.com",
+    //       clientId:
+    //         "31003588638-cpdkrb3906qbqcs8oqfjtl5o0pi1d16q.apps.googleusercontent.com",
+
+    //       clientSecret: "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",
+    //       refreshToken:
+    //         "1//04sJs1EakH9tRCgYIARAAGAQSNwF-L9IrOQ91hKZ9vdTtOHbmy6DkmbeF0uGG6UScI8CLif5xQL3YBRX94QEuUXd44ya5_v7s340",
+    //       accessToken:
+    //         "ya29.A0ARrdaM-D_4GlxNBKF1m56Ocm3asBP8ay1FMW6vOBXnWvLVH88KIVwA66B3Sn_Lva06Y1Zgy41vhUuC6QaCOr_Eg9ARVjfmQrq60hPXRZGiQxEEscwRNIJPa1NtBeKY8olOv1UIZMF1w1JOfXuJO0VnWf23hT",
+    //     },
+    //   },
+    // });
+
+    // var nodemailer = require("nodemailer");
+
+    // var transporter = nodemailer.createTransport({
+    //   host: "smtp.gmail.com",
+    //   port: 465,
+    //   secure: true,
+    //   auth: {
+    //     type: "OAuth2",
+    //     clientId: "000000000000-xxx.apps.googleusercontent.com",
+    //     clientSecret: "XxxxxXXxX0xxxxxxxx0XXxX0",
+    // },
+    //   user: "ameenhamza392@gmail.com",
+    //   clientId:
+    //     "31003588638-cpdkrb3906qbqcs8oqfjtl5o0pi1d16q.apps.googleusercontent.com",
+    //   clientSecret: "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",
+    //   refreshToken:
+    //     "1//04sJs1EakH9tRCgYIARAAGAQSNwF-L9IrOQ91hKZ9vdTtOHbmy6DkmbeF0uGG6UScI8CLif5xQL3YBRX94QEuUXd44ya5_v7s340",
+    // },
+    // });
+    console.log(".....");
+    const resp = sgMail.setApiKey(API_KEY);
+    console.log("resp", resp);
+    const message = {
+      from: "hamzaameen8079@gmail.com",
+      to: { email },
+      subject: "OTP Genrate from Wegoze food App",
+      text: `Your verification code is ${otp} from wegoze food`,
+      html: `<p>Your verification code is  <h4> ${otp} </h4> for wegoze food App </p>`,
+    };
+    console.log("message", message);
+    sgMail
+      .send(message)
+      .then((res) => console.log("Email Send Successfully...", res))
+      .catch((error) => console.log("erro", error.message));
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+// sendMail().then((result) => console.log("Email send...", result));
+module.exports = userController;

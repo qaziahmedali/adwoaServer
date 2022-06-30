@@ -1,8 +1,8 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const gaolSchema = Joi.object({
   goal_name: Joi.string().required(),
   user: Joi.string().required(),
 });
 
-export default gaolSchema;
+module.exports = gaolSchema;

@@ -1,9 +1,14 @@
-import { Product } from "../models";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import productSchema from "../validators/productValidator";
+const { Product } = require("../models");
+
+const multer = require("multer");
+
+const path = require("path");
+
+const fs = require("fs");
+
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
+const productSchema = require("../validators/categoryValidator");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -183,4 +188,4 @@ const productController = {
   },
 };
 
-export default productController;
+module.exports = productController;

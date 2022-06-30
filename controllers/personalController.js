@@ -1,6 +1,8 @@
-import { Personal } from "../models";
-import profileSchema from "../validators/profileSchema";
+// import { Personal } from "../models";
+// import profileSchema from "../validators/profileSchema";
+const { Personal } = require("../models");
 
+const profileSchema = require("../validators/profileSchema");
 const personalController = {
   // create profile
   async store(req, res, next) {
@@ -160,4 +162,4 @@ const personalController = {
   },
 };
 
-export default personalController;
+module.exports = personalController;

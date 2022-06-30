@@ -1,6 +1,11 @@
-import { Fitness, User } from "../models";
-import mongoose from "mongoose";
-import fitnessSchema from "../validators/fitnessSchema";
+// import { Fitness, User } from "../models";
+const { Fitness, User } = require("../models");
+
+// import mongoose from "mongoose";
+const mongoose = require("mongoose");
+
+// import fitnessSchema from "../validators/fitnessSchema";
+const fitnessSchema = require("../validators/fitnessSchema");
 
 const fitnessController = {
   // create profile
@@ -151,4 +156,4 @@ const fitnessController = {
   },
 };
 
-export default fitnessController;
+module.exports = fitnessController;

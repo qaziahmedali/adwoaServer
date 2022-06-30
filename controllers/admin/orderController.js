@@ -1,9 +1,9 @@
-import { Order } from "../../models";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
+const { Order } = require("../../models");
+const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const orderController = {
   async index(req, res, next) {
     let documents;
-
+    console.log("admin controller");
     try {
       documents = await Order.find({ status: { $ne: "completed" } })
         .select("-updatedAt -__v")
@@ -12,7 +12,7 @@ const orderController = {
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }
-
+    // console.log("orders", documents);
     return res.json(documents);
     // Order.find({ status: { $ne: "completed" } }, null, {
     //   sort: { createdAt: -1 },
@@ -28,4 +28,4 @@ const orderController = {
   },
 };
 
-export default orderController;
+module.exports = orderController;

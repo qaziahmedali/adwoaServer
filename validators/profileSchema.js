@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const profileSchema = Joi.object({
   name: Joi.string().required(),
@@ -9,4 +9,4 @@ const profileSchema = Joi.object({
   city: Joi.string().required(),
 });
 
-export default profileSchema;
+module.exports = profileSchema;

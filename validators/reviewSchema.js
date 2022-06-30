@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const reviewSchema = Joi.object({
   rating: Joi.number().required(),
@@ -11,4 +11,4 @@ const reviewSchema = Joi.object({
   price: Joi.number().required(),
 });
 
-export default reviewSchema;
+module.exports = reviewSchema;

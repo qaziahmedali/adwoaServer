@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const professionSchema = Joi.object({
   experience_year: Joi.string().required(),
@@ -6,4 +6,4 @@ const professionSchema = Joi.object({
   qualification: Joi.array().required(),
 });
 
-export default professionSchema;
+module.exports = professionSchema;

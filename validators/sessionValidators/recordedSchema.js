@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const recordedSchema = Joi.object({
   videoLink: Joi.string().required(),
@@ -8,4 +8,4 @@ const recordedSchema = Joi.object({
   desc: Joi.string().required(),
 });
 
-export default recordedSchema;
+module.exports = recordedSchema;

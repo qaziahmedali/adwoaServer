@@ -1,5 +1,5 @@
-import { Review, User } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
+const { Review, User } = require("../models");
+const CustomErrorHandler = require("../services/CustomErrorHandler");
 
 const updateReview = async (trainer) => {
   let document;
@@ -35,4 +35,4 @@ const updateReview = async (trainer) => {
   }
 };
 
-export default updateReview;
+module.exports = updateReview;

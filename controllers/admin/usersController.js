@@ -1,6 +1,6 @@
 // import { Order } from "../../models";
-import { User } from "../../models";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
+const { User } = require("../../models");
+const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const usersController = {
   async index(req, res, next) {
     let documents;
@@ -47,4 +47,4 @@ const usersController = {
     res.status(201).json(documents);
   },
 };
-export default usersController;
+module.exports = usersController;

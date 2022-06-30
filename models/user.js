@@ -1,45 +1,28 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-// const FitnessGoalSchema = mongoose.Schema({
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: "Fitness.fitness_goal",
-// });
-// const ServicesSchema = mongoose.Schema({
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: "Fitness.services_offered",
-// });
-// const FitnessLevelSchema = mongoose.Schema({
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: "Fitness.fitness_level",
-// });
-const FitnessLevelSchema = mongoose.Schema({
-  value: { type: String },
-  key: { type: String },
-});
+
 const userSchema = new Schema(
   {
-    email: { type: String },
-    password: { type: String },
-    role: { type: String, default: "trainee" },
-    fitness_level: {
-      value: { type: Number },
-      key: { type: String },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    profileImage: {
+      type: String,
+      required: false,
+      default: "/uploads/avatar.png",
     },
-    fitness_goal: {
-      value: { type: String },
-      key: { type: String },
+    challengeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Challenge",
     },
-    // services_offered: [FitnessLevelSchema],
-    isVerified: { type: Boolean, default: false },
-    emailVerified: { type: Boolean, default: false },
-    reset_password: { type: Boolean, default: false },
-    trainerVerified: { type: String, default: "pending" },
-    accountVerified: { type: String, default: "pending" }, //  suspend || active || deleted
-    numReviews: { type: Number, default: 0 },
-    averageRating: { type: Number, default: 0 },
+    totalPoints: { type: Number, default: 0 },
+    amount: { type: Number, default: 0 },
+    challengeStatus: { type: Boolean, default: false },
+    role: { type: String, default: "customer" },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema, "users");
+module.exports = mongoose.model("User", userSchema, "users");

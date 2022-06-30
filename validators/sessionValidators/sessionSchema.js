@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const sessionSchema = Joi.object({
   session_title: Joi.string().required(),
@@ -17,4 +17,4 @@ const sessionSchema = Joi.object({
   session_type: Joi.object().required(),
 });
 
-export default sessionSchema;
+module.exports = sessionSchema;

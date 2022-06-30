@@ -1,7 +1,7 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const onlineSchema = Joi.object({
   meetingLink: Joi.string().required(),
 });
 
-export default onlineSchema;
+module.exports = onlineSchema;

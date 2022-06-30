@@ -11,7 +11,7 @@ const notifSchema = new Schema(
     notif_token: {
       type: String,
     },
-    
+
     status: {
       type: String,
     },
@@ -19,4 +19,4 @@ const notifSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Notif_Tokens", notifSchema, "notif_tokens");
+module.exports = mongoose.model("Notif_Tokens", notifSchema, "notif_tokens");

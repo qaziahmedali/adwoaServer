@@ -1,6 +1,11 @@
-import { Goal, User } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import goalSchema from "../validators/goalSchema";
+// import { Goal, User } from "../models";
+const { Goal, User } = require("../models");
+
+// import CustomErrorHandler from "../services/CustomErrorHandler";
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
+// import goalSchema from "../validators/goalSchema";
+const goalSchema = require("../validators/goalSchema");
 
 const goalController = {
   // store goal
@@ -185,4 +190,4 @@ const goalController = {
   },
 };
 
-export default goalController;
+module.exports = goalController;

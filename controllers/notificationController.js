@@ -1,6 +1,9 @@
-import { Notif_Tokens } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
-import FirebaseService from "../services/FirebaseService";
+// import { Notif_Tokens } from "../models";
+const { Notif_Tokens } = require("../models");
+
+const CustomErrorHandler = require("../services/CustomErrorHandler");
+
+const FirebaseService = require("../services/FirebaseService");
 
 const notificationController = {
   async store(req, res, next) {
@@ -40,4 +43,4 @@ const notificationController = {
   },
 };
 
-export default notificationController;
+module.exports = notificationController;

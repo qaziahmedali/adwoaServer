@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const classesSchema = Joi.object({
   class_name: Joi.string().required(),
@@ -8,4 +8,4 @@ const classesSchema = Joi.object({
   class_type: Joi.string().required(),
 });
 
-export default classesSchema;
+module.exports = classesSchema;

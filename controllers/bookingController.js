@@ -1,10 +1,12 @@
-import { Personal, Profession, Session, User, Booking } from "../models";
-import bookingSchema from "../validators/bookingSchema";
+// import { Personal, Profession, Session, User, Booking } from "../models";
+const { Personal, Profession, Session, User, Booking } = require("../models");
 
+// import bookingSchema from "../validators/bookingSchema";
+const bookingSchema = require("../validators/bookingSchema");
 const bookingController = {
   // get  All classes/or bookings
   async index(req, res, next) {},
-  
+
   // book a session
   async store(req, res, next) {
     console.log("req.body", req.body);
@@ -47,8 +49,7 @@ const bookingController = {
 
   async update(req, res, next) {},
 
-  async show(req, res, next) {
-  },
+  async show(req, res, next) {},
 
   // get trainer booked sessions
   async getByTrainerId(req, res, next) {
@@ -169,4 +170,4 @@ const bookingController = {
   },
 };
 
-export default bookingController;
+module.exports = bookingController;

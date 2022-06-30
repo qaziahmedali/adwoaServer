@@ -1,9 +1,9 @@
-import { FIREBASE_TOKEN } from "../config";
-import admin from "firebase-admin";
-import serviceAccount from "../food-app-69e18-firebase-adminsdk-24cyc-46dcb2530f.json";
-import CustomErrorHandler from "./CustomErrorHandler";
-import { options } from "joi";
-import { Notif_Tokens } from "../models";
+const { FIREBASE_TOKEN } = require("../config");
+const admin = require("firebase-admin");
+const serviceAccount = require("../food-app-69e18-firebase-adminsdk-24cyc-46dcb2530f.json");
+const CustomErrorHandler = require("./CustomErrorHandler");
+const { options } = require("joi");
+const { Notif_Tokens } = require("../models");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -53,4 +53,4 @@ class FirebaseService {
   }
 }
 
-export default FirebaseService;
+module.exports = FirebaseService;

@@ -1,5 +1,6 @@
-import { Video } from "../models";
-import videoSchema from "../validators/videoSchema";
+const { Video } = require("../models");
+
+const videoSchema = require("../validators/videoSchema");
 const videoController = {
   // create profile
   async store(req, res, next) {
@@ -94,4 +95,4 @@ const videoController = {
   },
 };
 
-export default videoController;
+module.exports = videoController;

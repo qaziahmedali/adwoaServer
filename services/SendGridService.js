@@ -1,8 +1,14 @@
-import { JWT_SECRET } from "../config";
-import { User } from "../models";
-import otp from "../models/otp";
-import sgMail from "@sendgrid/mail";
-import { API_KEY } from "../config/";
+// import { JWT_SECRET } from "../config";
+// import { User } from "../models";
+// import otp from "../models/otp";
+// import sgMail from "@sendgrid/mail";
+// import { API_KEY } from "../config/";
+
+const { JWT_SECRET } = require("../config");
+const { API_KEY } = require("../config");
+const { User } = require("../model");
+const otp = require("../models/otp");
+const sgMail = require("@sendgrid/mail");
 class SendGridService {
   static async sendEmail(email, next) {
     const otpCode = Math.floor(10000 + Math.random() * 90000);
@@ -72,4 +78,4 @@ function mailer(email, otp) {
     return next(CustomErrorHandler.serverError());
   }
 }
-export default SendGridService;
+module.exports = SendGridService;

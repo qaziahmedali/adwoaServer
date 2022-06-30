@@ -1,5 +1,5 @@
-import { User } from "../models";
-import CustomErrorHandler from "../services/CustomErrorHandler";
+const { User } = require("../models");
+const CustomErrorHandler = require("../services/CustomErrorHandler");
 
 const admin = async (req, res, next) => {
   console.log("req", req.user);
@@ -16,4 +16,4 @@ const admin = async (req, res, next) => {
   }
 };
 
-export default admin;
+module.exports = admin;

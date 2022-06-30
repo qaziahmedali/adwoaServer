@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("Joi");
 
 const fitnessSchema = Joi.object({
   fitness_level: Joi.array().required(),
@@ -6,4 +6,4 @@ const fitnessSchema = Joi.object({
   services_offered: Joi.array().required(),
 });
 
-export default fitnessSchema;
+module.exports = fitnessSchema;
