@@ -6,7 +6,7 @@
 
 const { JWT_SECRET } = require("../config");
 const { SANDGRID_API_KEY } = require("../config");
-const { User } = require("../model");
+const { User } = require("../models/");
 const otp = require("../models/otp");
 const sgMail = require("@sendgrid/mail");
 class SendGridService {
