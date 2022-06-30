@@ -12,5 +12,5 @@ module.exports.Category = require("./category");
 module.exports.Transaction = require("./transaction");
 module.exports.Order = require("./order");
 module.exports.Challenge = require("./challenge");
-module.exports.Notif_Tokens = require("./notif_Tokens");
+module.exports.Notif_Tokens = require("./notif_tokens");
 module.exports.Message = require("./message");
