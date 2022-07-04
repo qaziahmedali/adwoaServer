@@ -76,56 +76,26 @@ const userController = {
     };
     res.status(201).json(result);
   },
+
   async changePassword(req, res, next) {
     console.log("req", req.body);
+    const findData = await User.findOne({ email: req.body.email });
     try {
-      const data = await Otp.find({
-        email: req.body.email,
-        code: req.body.code,
-      });
-
-      console.log("data", data);
-      const response = {};
-
-      if (data) {
-        console.log("data");
-        const date = new Date();
-        const currenTime = date.getTime();
-        console.log("time", currenTime);
-
-        console.log("data?.forEach((v,i)=>{v?.expireIn})", data[0].expireIn);
-        const diff = data[0].expireIn - currenTime;
-        console.log("time", diff);
-        if (diff < 0) {
-          console.log("data...");
-          response.message = "token expired";
-          response.statusText = "error";
-        } else {
-          response.message = "Otp verified succcessfully";
-          response.statusText = "Otp verify";
-          console.log("....");
-          console.log("....", req.body.password);
-          const hashedPassword = await bcrypt.hash(req.body.password, 10);
-          const user = await User.findOneAndUpdate(
-            { email: req.body.email },
-            { password: hashedPassword }
-          );
-
-          // await user.save();
-          console.log("user", user);
-          res.status(201).json("Update Success");
-          // response.message = "password change Successfully";
-          // response.statusText = "Success";
-        }
+      if (findData.reset_password) {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = await User.findOneAndUpdate(
+          { email: req.body.email },
+          { password: hashedPassword, reset_password: false }
+          // { reset_password: false }
+        );
+        res.status(201).json({ message: "password updated" });
       } else {
-        res.json("Please Correct code enter");
-        // response.message = "Invalid Otp";
-        // response.statusText = "error";
+        return next(CustomErrorHandler.notFound("unable to change password"));
       }
       // res.json(response);
     } catch (error) {
       console.log(error);
-      res.json("Please Correct code enter");
+      res.next(error);
     }
   },
 
