@@ -92,7 +92,7 @@ const registerController = {
       let data;
       try {
         data = await user.save();
-        email_message = await SendGridService.sendEmail(req.body.email, next);
+        response = await SendGridService.sendEmail(req.body.email, next);
 
         // Token
         access_token = JwtServices.sign({ _id: data._id, role: data.role });
@@ -100,10 +100,11 @@ const registerController = {
         return next(err);
       }
       const result = {
-        message: "success",
-        email_message,
+        message: response.message,
+        statusCode: 201,
+        success: true,
         access_token,
-        data: data,
+        data: { access_token, user: data },
       };
 
       res.json(result);

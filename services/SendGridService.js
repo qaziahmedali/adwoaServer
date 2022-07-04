@@ -18,6 +18,7 @@ class SendGridService {
       .findOne({ email: email })
       .limit(1)
       .sort({ $natural: -1 });
+
     //if exist then update the otp otherwise create new one
     if (result) {
       const upDate = await otp.findByIdAndUpdate(
@@ -38,13 +39,10 @@ class SendGridService {
       console.log("mailer if");
       mailer(result.email, otpCode);
       console.log("mailer");
-      let response = {
-        statusCode: 201,
-        success: true,
+      return {
         email: result.email,
         message: "OTP sent to your email, please check your email",
       };
-      return response;
     } else {
       return next(new Error("email does not exist!"));
     }
@@ -71,11 +69,11 @@ function mailer(email, otp) {
       })
       .catch((error) => {
         console.log("error", error.message);
-        return next(CustomErrorHandler.serverError());
+        return next(error);
       });
   } catch (error) {
     console.log("catch error", error);
-    return next(CustomErrorHandler.serverError());
+    return next(error);
   }
 }
 module.exports = SendGridService;
