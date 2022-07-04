@@ -88,16 +88,20 @@ const userController = {
     console.log("req", req.body);
     const findData = await User.findOne({ email: req.body.email });
     try {
-      if (findData.reset_password) {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const user = await User.findOneAndUpdate(
-          { email: req.body.email },
-          { password: hashedPassword, reset_password: false }
-          // { reset_password: false }
-        );
-        res.status(201).json({ message: "password updated" });
+      if (findData) {
+        if (findData.reset_password) {
+          const hashedPassword = await bcrypt.hash(req.body.password, 10);
+          const user = await User.findOneAndUpdate(
+            { email: req.body.email },
+            { password: hashedPassword, reset_password: false }
+            // { reset_password: false }
+          );
+          res.status(201).json({ message: "password updated" });
+        } else {
+          return next(CustomErrorHandler.notFound("unable to change password"));
+        }
       } else {
-        return next(CustomErrorHandler.notFound("unable to change password"));
+        return next(CustomErrorHandler.notFound("email not correct"));
       }
       // res.json(response);
     } catch (error) {
