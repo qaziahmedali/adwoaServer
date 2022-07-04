@@ -78,7 +78,7 @@ const userController = {
     console.log(data);
     const responseType = {};
     if (data) {
-      const otpCode = Math.floor(1000 + Math.random() * 9000);
+      const otpCode = Math.floor(10000 + Math.random() * 90000);
       const otpData = new Otp({
         email: req.body.email,
         code: otpCode,

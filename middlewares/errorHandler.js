@@ -28,6 +28,8 @@ const errorHandler = (err, req, res, next) => {
     statusCode = 422; // use for validation error
     data = {
       message: err.message,
+      statusCode,
+      success: false,
     };
   }
 
@@ -35,6 +37,8 @@ const errorHandler = (err, req, res, next) => {
     statusCode = err.status;
     data = {
       message: err.message,
+      statusCode,
+      success: false,
     };
   }
 
