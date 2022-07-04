@@ -9,42 +9,48 @@ const { SANDGRID_API_KEY } = require("../config");
 const { User } = require("../models/");
 const otp = require("../models/otp");
 const sgMail = require("@sendgrid/mail");
+const CustomErrorHandler = require("./CustomErrorHandler");
 class SendGridService {
   static async sendEmail(email, next) {
     const otpCode = Math.floor(10000 + Math.random() * 90000);
     let result;
-    // check if otp already exist
-    result = await otp
-      .findOne({ email: email })
-      .limit(1)
-      .sort({ $natural: -1 });
+    let isEmailExist = await User.findOne({ email });
+    if (isEmailExist) {
+      // check if otp already exist
+      result = await otp
+        .findOne({ email: email })
+        .limit(1)
+        .sort({ $natural: -1 });
 
-    //if exist then update the otp otherwise create new one
-    if (result) {
-      const upDate = await otp.findByIdAndUpdate(
-        { _id: result._id },
-        { code: otpCode, expireIn: new Date().getTime() + 60000 }
-      );
-    } else {
-      let data = await User.findOne({ email });
-      const otpData = new otp({
-        email,
-        code: otpCode,
-        expireIn: new Date().getTime() + 60000,
-      });
-      result = await otpData.save();
-    }
+      //if exist then update the otp otherwise create new one
+      if (result) {
+        const upDate = await otp.findByIdAndUpdate(
+          { _id: result._id },
+          { code: otpCode, expireIn: new Date().getTime() + 60000 }
+        );
+      } else {
+        await User.findOne({ email });
+        const otpData = new otp({
+          email,
+          code: otpCode,
+          expireIn: new Date().getTime() + 60000,
+        });
+        result = await otpData.save();
+      }
 
-    if (result) {
-      console.log("mailer if");
-      mailer(result.email, otpCode);
-      console.log("mailer");
-      return {
-        email: result.email,
-        message: "OTP sent to your email, please check your email",
-      };
+      if (result) {
+        console.log("mailer if");
+        mailer(result.email, otpCode);
+        console.log("mailer");
+        return {
+          email: result.email,
+          message: "OTP sent to your email, please check your email",
+        };
+      } else {
+        return next(CustomErrorHandler.notFound("email not correct"));
+      }
     } else {
-      return next(new Error("email does not exist!"));
+      return next(CustomErrorHandler.notFound("email not correct"));
     }
   }
 }

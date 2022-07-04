@@ -2,6 +2,8 @@
 const { User } = require("../../models");
 const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const bcrypt = require("bcrypt");
+const SendGridService = require("../../services/SendGridService");
+const otp = require("../../models/otp");
 
 const userController = {
   async me(req, res, next) {
@@ -20,10 +22,11 @@ const userController = {
   },
   async codeVerify(req, res, next) {
     try {
-      let data = await Otp.findOne({
-        email: req.body.email,
-        code: req.body.code,
-      })
+      let data = await otp
+        .findOne({
+          email: req.body.email,
+          code: req.body.code,
+        })
         .limit(1)
         .sort({ $natural: -1 });
 
@@ -67,14 +70,18 @@ const userController = {
     // res.status(response.statusText).json(response);
   },
   async emailSend(req, res, next) {
-    const response = await SendGridService.sendEmail(req.body.email, next);
-    const result = {
-      message: response.message,
-      statusCode: 201,
-      success: true,
-      data: data,
-    };
-    res.status(201).json(result);
+    try {
+      const response = await SendGridService.sendEmail(req.body.email, next);
+      const result = {
+        message: response.message,
+        statusCode: 201,
+        success: true,
+        data: null,
+      };
+      res.status(201).json(result);
+    } catch (error) {
+      return next(error);
+    }
   },
 
   async changePassword(req, res, next) {
