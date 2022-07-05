@@ -64,6 +64,7 @@ router.delete(
 );
 router.get("/products", productController.index);
 router.get("/products/:id", productController.show);
+router.get("/products/show/:categoryId", productController.showByCategoryId);
 
 // Category Routes
 router.post("/categories", [auth, admin], categoryController.store);
@@ -71,7 +72,7 @@ router.put("/categories/:id", [auth, admin], categoryController.update);
 router.delete("/categories/:id", [auth, admin], categoryController.destroy);
 router.get("/categories", categoryController.index);
 router.get("/categories/:id", categoryController.show);
-router.get("/category/products", categoryController.products);
+// router.get("/category/products", categoryController.products);
 
 // Orders Routes
 router.post("/orders", [auth], orderController.store);

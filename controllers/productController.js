@@ -74,14 +74,12 @@ const productController = {
         return next(err);
       }
 
-      res
-        .status(201)
-        .json({
-          message: "created",
-          success: true,
-          statusCode: 201,
-          data: document,
-        });
+      res.status(201).json({
+        message: "created",
+        success: true,
+        statusCode: 201,
+        data: document,
+      });
     });
   },
 
@@ -186,6 +184,44 @@ const productController = {
     }
     console.log(document);
     return res.json(document);
+  },
+  // get show By CategoryId
+  async showByCategoryId(req, res, next) {
+    let document;
+    // pagination mongoose pagination
+    try {
+      result = await Product.find({ category: req.params.categoryId })
+        .select("-updatedAt -__v")
+        .populate({
+          path: "category",
+          model: "Category",
+          select: "-updatedAt -__v",
+        })
+        .populate({
+          path: "seller",
+          model: "User",
+          select: "-__v -password -updatedAt",
+        });
+      if (result.length > 0) {
+        success = true;
+        statusCode = 200;
+        message = "get products successfully";
+      } else {
+        message = "not found";
+        success = false;
+        statusCode = 404;
+      }
+    } catch (err) {
+      return next(err);
+    }
+    document = {
+      statusCode,
+      success,
+      message,
+      data: result,
+    };
+
+    res.status(statusCode).json(document);
   },
 
   // get single product
