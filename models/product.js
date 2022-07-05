@@ -9,12 +9,20 @@ const productSchema = new Schema(
   {
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    size: { type: String, required: true },
-    categoryId: {
+    location: { type: String, required: true },
+    payment: { type: String, required: false },
+    des: { type: String, required: false },
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     image: {
       type: String,
       required: true,

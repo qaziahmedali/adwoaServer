@@ -62,16 +62,17 @@ const registerController = {
       }
 
       // check if user exist in database already
-      // try {
-      //   const exist = await User.exists({ email: req.body.email });
-      //   if (exist) {
-      //     return next(
-      //       CustomErrorHandler.alreadyExist("This email is already taken.")
-      //     );
-      //   }
-      // } catch (err) {
-      //   return next(err);
-      // }
+      try {
+        const exist = await User.exists({ email: req.body.email });
+        if (exist) {
+          return next(
+            CustomErrorHandler.alreadyExist("This email is already taken.")
+          );
+        }
+      } catch (err) {
+        return next(err);
+        `1`;
+      }
 
       const { name, email, password, phone, role } = req.body;
 
@@ -99,15 +100,15 @@ const registerController = {
       } catch (err) {
         return next(err);
       }
+      console.log("response", response);
       const result = {
         message: response.message,
         statusCode: 201,
         success: true,
-        access_token,
-        data: { access_token, user: data },
+        data: { access_token, user: response.user },
       };
 
-      res.json(result);
+      res.status(201).json(result);
     });
   },
 };

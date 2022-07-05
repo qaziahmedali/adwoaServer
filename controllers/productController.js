@@ -28,10 +28,11 @@ const handleMultipartData = multer({
 const productController = {
   // store product
   async store(req, res, next) {
+    console.log("req.body", req.body);
     // Multipart from data
     handleMultipartData(req, res, async (err) => {
       if (err) {
-        return next(CustomErrorHandler.serverError(err.message));
+        return next(err);
       }
       let filePath;
       if (req.file) {
@@ -47,23 +48,27 @@ const productController = {
         // Delete the uploading image
         fs.unlink(`${appRoot}/${filePath}`, (err) => {
           if (err) {
-            return next(CustomErrorHandler.serverError(err.message));
+            return next(err);
           }
         });
 
         return next(error);
       }
 
-      const { name, price, size, categoryId } = req.body;
+      const { name, price, category, seller, location, payment, des } =
+        req.body;
       let document;
 
       try {
         document = await Product.create({
           name,
           price,
-          size,
-          categoryId,
+          category,
           image: filePath,
+          seller,
+          location,
+          payment,
+          des,
         });
       } catch (err) {
         return next(err);
@@ -101,7 +106,8 @@ const productController = {
         return next(error);
       }
 
-      const { name, price, size, categoryId } = req.body;
+      const { name, price, category, seller, location, payment, des } =
+        req.body;
       let document;
 
       try {
@@ -110,9 +116,12 @@ const productController = {
           {
             name,
             price,
-            size,
+            location,
+            payment,
+            des,
             ...(req.file && { image: filePath }),
-            categoryId,
+            category,
+            seller,
           },
           { new: true }
         );
@@ -149,7 +158,8 @@ const productController = {
       documents = await Product.find()
         .select("-updatedAt -__v")
         .sort({ createdAt: -1 })
-        .populate("categoryId");
+        .populate("category")
+        .populate("user");
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }

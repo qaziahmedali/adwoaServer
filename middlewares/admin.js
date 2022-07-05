@@ -3,17 +3,17 @@ const CustomErrorHandler = require("../services/CustomErrorHandler");
 
 const admin = async (req, res, next) => {
   console.log("req", req.user);
-  try {
-    const user = await User.findOne({ _id: req.user._id });
+  // try {
+  const user = await User.findOne({ _id: req.user._id });
 
-    if (user.role === "admin") {
-      next();
-    } else {
-      return next(CustomErrorHandler.unAuthorized());
-    }
-  } catch (error) {
-    return next(CustomErrorHandler.serverError());
+  if (user.role === "admin") {
+    next();
+  } else {
+    return next(CustomErrorHandler.unAuthorized());
   }
+  // } catch (error) {
+  //   return next(CustomErrorHandler.serverError());
+  // }
 };
 
 module.exports = admin;

@@ -59,14 +59,14 @@ const categoryController = {
       const { name } = req.body;
       let document;
 
-      // try {
-      document = await Category.create({
-        name,
-        categoryImage: filePath,
-      });
-      // } catch (err) {
-      //   return next(err);
-      // }
+      try {
+        document = await Category.create({
+          name,
+          categoryImage: filePath,
+        });
+      } catch (err) {
+        return next(err);
+      }
 
       res.status(201).json(document);
     });

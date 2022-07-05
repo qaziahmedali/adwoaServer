@@ -32,6 +32,7 @@ const {
   messageController,
 } = require("../controllers");
 const auth = require("../middlewares/auth");
+const seller = require("../middlewares/seller");
 
 const admin = require("../middlewares/admin");
 
@@ -54,9 +55,13 @@ router.put("/profile/edit/phone/:id", auth, profileController.editPhone);
 router.put("/profile/edit/password/:id", auth, profileController.editPassword);
 
 // Products Routes
-router.post("/products", [auth, admin], productController.store);
-router.put("/products/:id", [auth, admin], productController.update);
-router.delete("/products/:id", [auth, admin], productController.destroy);
+router.post("/products", [auth, seller], productController.store);
+router.put("/products/:id", [auth, admin, seller], productController.update);
+router.delete(
+  "/products/:id",
+  [auth, admin, seller],
+  productController.destroy
+);
 router.get("/products", productController.index);
 router.get("/products/:id", productController.show);
 

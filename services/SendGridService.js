@@ -13,8 +13,10 @@ const CustomErrorHandler = require("./CustomErrorHandler");
 class SendGridService {
   static async sendEmail(email, next) {
     const otpCode = Math.floor(10000 + Math.random() * 90000);
-    let result;
-    let isEmailExist = await User.findOne({ email });
+    let result, user;
+    let isEmailExist = await User.findOne({ email }).select(
+      "name email phone emailVerified role"
+    );
     if (isEmailExist) {
       // check if otp already exist
       result = await otp
@@ -26,24 +28,24 @@ class SendGridService {
       if (result) {
         const upDate = await otp.findByIdAndUpdate(
           { _id: result._id },
-          { code: otpCode, expireIn: new Date().getTime() + 60000 }
+          { code: otpCode, expireIn: new Date().getTime() + 600000 }
         );
       } else {
-        await User.findOne({ email });
+        console.log("user", user);
         const otpData = new otp({
           email,
           code: otpCode,
-          expireIn: new Date().getTime() + 60000,
+          expireIn: new Date().getTime() + 600000,
         });
         result = await otpData.save();
       }
 
       if (result) {
         console.log("mailer if");
-        mailer(result.email, otpCode);
+        mailer(result.email, otpCode, next);
         console.log("mailer");
         return {
-          email: result.email,
+          user: isEmailExist,
           message: "OTP sent to your email, please check your email",
         };
       } else {
@@ -55,7 +57,7 @@ class SendGridService {
   }
 }
 //mailer function call
-function mailer(email, otp) {
+function mailer(email, otp, next) {
   try {
     const resp = sgMail.setApiKey(SANDGRID_API_KEY);
 

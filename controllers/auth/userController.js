@@ -88,6 +88,7 @@ const userController = {
     console.log("req", req.body);
     const findData = await User.findOne({ email: req.body.email });
     try {
+      console.log("findData", findData);
       if (findData) {
         if (findData.reset_password) {
           const hashedPassword = await bcrypt.hash(req.body.password, 10);
