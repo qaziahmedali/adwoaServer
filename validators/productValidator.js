@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const productSchema = Joi.object({
   name: Joi.string().required(),
-  price: Joi.number().required(),
+  price: Joi.string().required(),
   category: Joi.string().required(),
   seller: Joi.string().required(),
   location: Joi.string().required(),
