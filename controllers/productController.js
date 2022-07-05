@@ -8,7 +8,7 @@ const fs = require("fs");
 
 const CustomErrorHandler = require("../services/CustomErrorHandler");
 
-const productSchema = require("../validators/categoryValidator");
+const productSchema = require("../validators/productValidator");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
