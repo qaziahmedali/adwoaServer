@@ -50,6 +50,7 @@ router.get("/users", auth, userController.index);
 
 // profile update routes
 router.put("/profile/edit/name/:id", auth, profileController.editName);
+router.put("/profile/edit/:id", auth, profileController.update);
 router.put("/profile/edit/email/:id", auth, profileController.editEmail);
 router.put("/profile/edit/phone/:id", auth, profileController.editPhone);
 router.put("/profile/edit/password/:id", auth, profileController.editPassword);
