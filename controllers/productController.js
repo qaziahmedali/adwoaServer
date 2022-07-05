@@ -159,7 +159,7 @@ const productController = {
         .select("-updatedAt -__v")
         .sort({ createdAt: -1 })
         .populate("category")
-        .populate("user");
+        .populate("seller");
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }
