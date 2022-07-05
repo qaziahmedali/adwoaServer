@@ -74,7 +74,14 @@ const productController = {
         return next(err);
       }
 
-      res.status(201).json(document);
+      res
+        .status(201)
+        .json({
+          message: "created",
+          success: true,
+          statusCode: 201,
+          data: document,
+        });
     });
   },
 
