@@ -1,11 +1,7 @@
-// import { User } from "../../models";
-// import Joi, { ref } from "joi";
 const Joi = require("joi");
-// import bcrypt from "bcrypt";
-// import CustomErrorHandler from "../../services/CustomErrorHandler";
-const { User, Category, Product } = require("../../models");
+const fs = require("fs");
+const { User, Product, Otp } = require("../../models");
 const bcrypt = require("bcrypt");
-// const Joi = require("joi");
 const CustomErrorHandler = require("../../services/CustomErrorHandler");
 const userController = {
   async me(req, res, next) {
@@ -166,14 +162,17 @@ const userController = {
   // delete account
   async accountRemove(req, res, next) {
     try {
+      const user = await User.findById({ _id: req.params.id });
       const document = await User.findByIdAndRemove({ _id: req.params.id });
       if (document) {
-        const category = await Category.findOneAndRemove({
-          user: req.params.id,
-        });
-        const product = await Product.findOneAndRemove({ user: req.params.id });
-      }
-      if (!document) {
+        // const category = await Category.deleteMany({
+        //   user: req.params.id,
+        // });
+        const product = await Product.deleteMany({ user: req.params.id });
+        if (user) {
+          const otp = await Otp.findOneAndRemove({ email: user.email });
+        }
+      } else {
         return next(new Error("Nothing to delete"));
       }
       // image delete

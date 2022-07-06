@@ -38,6 +38,7 @@ const admin = require("../middlewares/admin");
 
 //Change password
 router.post("/email-send", userController.emailSend);
+router.post("/resend-email", userController.resendEmail);
 router.post("/code-verify", userController.codeVerify);
 router.post("/change-password", userController.changePassword);
 

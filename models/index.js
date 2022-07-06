@@ -14,3 +14,4 @@ module.exports.Order = require("./order");
 module.exports.Challenge = require("./challenge");
 module.exports.Notif_Tokens = require("./notif_tokens");
 module.exports.Message = require("./message");
+module.exports.Otp = require("./otp");

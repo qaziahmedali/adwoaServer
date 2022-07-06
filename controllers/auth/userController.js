@@ -84,6 +84,22 @@ const userController = {
     }
   },
 
+  // otp resend in email (one time password ) for verification
+  async resendEmail(req, res, next) {
+    try {
+      const response = await SendGridService.sendEmail(req.body.email, next);
+      const result = {
+        message: response.message,
+        statusCode: 201,
+        success: true,
+        data: null,
+      };
+      res.status(201).json(result);
+    } catch (error) {
+      return next(error);
+    }
+  },
+
   async changePassword(req, res, next) {
     console.log("req", req.body);
     const findData = await User.findOne({ email: req.body.email });
