@@ -3,7 +3,7 @@
 const Joi = require("joi");
 // import bcrypt from "bcrypt";
 // import CustomErrorHandler from "../../services/CustomErrorHandler";
-const { User } = require("../../models");
+const { User, Category, Product } = require("../../models");
 const bcrypt = require("bcrypt");
 // const Joi = require("joi");
 const CustomErrorHandler = require("../../services/CustomErrorHandler");
@@ -161,6 +161,33 @@ const userController = {
       success: true,
       data: document,
     });
+  },
+
+  // delete account
+  async accountRemove(req, res, next) {
+    try {
+      const document = await User.findByIdAndRemove({ _id: req.params.id });
+      if (document) {
+        const category = await Category.findOneAndRemove({
+          user: req.params.id,
+        });
+        const product = await Product.findOneAndRemove({ user: req.params.id });
+      }
+      if (!document) {
+        return next(new Error("Nothing to delete"));
+      }
+      // image delete
+      const imagePath = document._doc.image;
+      fs.unlink(`${appRoot}/${imagePath}`, (err) => {
+        if (err) {
+          return next(CustomErrorHandler.serverError());
+        }
+      });
+    } catch (error) {
+      return next(error);
+    }
+
+    res.statusCode(200).json(document);
   },
 };
 

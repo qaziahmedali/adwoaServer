@@ -1,13 +1,8 @@
 const { Product } = require("../models");
-
 const multer = require("multer");
-
 const path = require("path");
-
 const fs = require("fs");
-
 const CustomErrorHandler = require("../services/CustomErrorHandler");
-
 const productSchema = require("../validators/productValidator");
 
 const storage = multer.diskStorage({
@@ -55,8 +50,7 @@ const productController = {
         return next(error);
       }
 
-      const { name, price, category, seller, location, payment, des } =
-        req.body;
+      const { name, price, category, user, location, payment, des } = req.body;
       let document;
 
       try {
@@ -65,7 +59,7 @@ const productController = {
           price,
           category,
           image: filePath,
-          seller,
+          user,
           location,
           payment,
           des,
@@ -111,8 +105,7 @@ const productController = {
         return next(error);
       }
 
-      const { name, price, category, seller, location, payment, des } =
-        req.body;
+      const { name, price, category, user, location, payment, des } = req.body;
       let document;
 
       try {
@@ -126,7 +119,7 @@ const productController = {
             des,
             ...(req.file && { image: filePath }),
             category,
-            seller,
+            user,
           },
           { new: true }
         );
@@ -164,7 +157,7 @@ const productController = {
         .select("-updatedAt -__v")
         .sort({ createdAt: -1 })
         .populate("category")
-        .populate("seller");
+        .populate("user");
     } catch (err) {
       return next(CustomErrorHandler.serverError());
     }
@@ -198,7 +191,7 @@ const productController = {
           select: "-updatedAt -__v",
         })
         .populate({
-          path: "seller",
+          path: "user",
           model: "User",
           select: "-__v -password -updatedAt",
         });

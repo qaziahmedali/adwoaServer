@@ -54,6 +54,7 @@ router.put("/profile/edit/:id", auth, profileController.update);
 router.put("/profile/edit/email/:id", auth, profileController.editEmail);
 router.put("/profile/edit/phone/:id", auth, profileController.editPhone);
 router.put("/profile/edit/password/:id", auth, profileController.editPassword);
+router.delete("/account/remove/:id", auth, profileController.accountRemove);
 
 // Products Routes
 router.post("/products", [auth, seller], productController.store);
