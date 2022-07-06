@@ -173,7 +173,7 @@ const userController = {
           const otp = await Otp.findOneAndRemove({ email: user.email });
         }
       } else {
-        return next(new Error("Nothing to delete"));
+        return next(CustomErrorHandler.notFound("Nothing to delete"));
       }
       // image delete
       const imagePath = document._doc.image;
@@ -185,8 +185,12 @@ const userController = {
     } catch (error) {
       return next(error);
     }
-
-    res.statusCode(200).json(document);
+    return res.status(200).json({
+      message: "Account deleted successfully",
+      statusCode: 200,
+      success: true,
+      data: null,
+    });
   },
 };
 
